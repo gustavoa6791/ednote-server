@@ -38,8 +38,10 @@ passport.use(
       delete user.password;
 
       return cb(null, user);
+
     } catch (error) {
-      return cb(error);
+      
+      return cb(error, false);
     }
   })
 );

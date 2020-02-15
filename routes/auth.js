@@ -24,6 +24,7 @@ function authApi(app) {
     if (!apiKeyToken) {
       next(boom.unauthorized('apiKeyToken is required'));
     }
+    
 
     passport.authenticate('basic', function (error, user) {
       try {
@@ -32,7 +33,7 @@ function authApi(app) {
         }
 
         req.login(user, { session: false }, async function (error) {
-          
+
           if (error) {
             next(error);
           }
