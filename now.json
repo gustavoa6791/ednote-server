@@ -1,0 +1,17 @@
+{
+  "name": "ednote-server",
+  "version": 2,
+  "builds": [{ "src": "index.js", "use": "@now/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "/index.js" }],
+  "env": {
+    "DB_USER": "@ednote-dbuser",
+    "DB_PASSWORD": "@ednote-dbpassword",
+    "DB_HOST": "@ednote-dbhost",
+    "DB_NAME": "@ednote-dbname",
+
+"AUTH_JWT_SECRET" :"@ednote-auth",
+"PUBLIC_API_KEY_TOKEN" : "@ednote-keypublic",
+"ADMIN_API_KEY_TOKEN" : "@ednote-keyadmin"
+
+  }
+}
