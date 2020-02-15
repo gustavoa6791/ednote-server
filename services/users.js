@@ -25,6 +25,8 @@ class UsersService {
     return createUserId;
   }
 
+  
+
   async getOrCreateUser({ user }) {
     const queriedUser = await this.getUser({ email: user.email });
 
@@ -34,6 +36,15 @@ class UsersService {
 
     await this.createUser({ user });
     return await this.getUser({ email: user.email });
+  }
+
+  async updateUser( email, data) {
+    const updatedUserId = await this.mongoDB.updateOne(
+      this.collection,
+      email,
+      data
+    );
+    return updatedUserId;
   }
 }
 

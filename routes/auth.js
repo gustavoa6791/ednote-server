@@ -28,7 +28,7 @@ function authApi(app) {
     passport.authenticate('basic', function (error, user) {
       try {
         if (error || !user) {
-          next(boom.unauthorized());
+          next(error);
         }
 
         req.login(user, { session: false }, async function (error) {
@@ -57,7 +57,7 @@ function authApi(app) {
           });
 
           return res.status(200).json({ token, user: { id, name, email ,rol} });
-        });
+        }); 
       } catch (error) {
         next(error);
       }
