@@ -32,6 +32,7 @@ function authApi(app) {
         }
 
         req.login(user, { session: false }, async function (error) {
+          
           if (error) {
             next(error);
           }

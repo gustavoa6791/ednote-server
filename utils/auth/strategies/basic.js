@@ -19,7 +19,7 @@ passport.use(
       const diferencia = (new Date() - user.chance[0]) / (1000*60)
 
       if (user.chance[1] >= 3  && diferencia < 20 ){
-        return cb(boom.unauthorized("usuarioBloqueado"))
+        return cb(boom.unauthorized("usuarioBloqueado"),false)
 
       }
 
