@@ -28,8 +28,6 @@ function authApi(app) {
 
     passport.authenticate('basic', function (error, user) {
       try {
-
-          console.log
         if (error || !user || user == undefined ) {
           next(error);
         }
@@ -46,7 +44,7 @@ function authApi(app) {
             next(boom.unauthorized());
           }
 
-          console.log(user)
+          if (user != undefined) {
 
           const { _id: id, name, email,rol } = user;
 
@@ -63,6 +61,10 @@ function authApi(app) {
           });
 
           return res.status(200).json({ token, user: { id, name, email ,rol} });
+            
+          }
+
+          
         }); 
       } catch (error) {
         next();
