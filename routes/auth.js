@@ -30,7 +30,7 @@ function authApi(app) {
       try {
 
           console.log
-        if (error || !user || user._id == undefined ) {
+        if (error || !user || user == undefined ) {
           next(error);
         }
 
@@ -46,10 +46,12 @@ function authApi(app) {
             next(boom.unauthorized());
           }
 
-          const {  name, email,rol } = user;
+          console.log(user)
+
+          const { _id: id, name, email,rol } = user;
 
           const payload = {
-            
+            sub: id,
             name,
             email,
             rol,
@@ -63,7 +65,7 @@ function authApi(app) {
           return res.status(200).json({ token, user: { id, name, email ,rol} });
         }); 
       } catch (error) {
-        next(error);
+        next();
       }
     })(req, res, next);
   });
