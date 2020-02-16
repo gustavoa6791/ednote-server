@@ -30,7 +30,7 @@ function authApi(app) {
       try {
 
           console.log
-        if (error || !user || user == undefined ) {
+        if (error || !user || user._id == undefined ) {
           next(error);
         }
 
@@ -46,10 +46,10 @@ function authApi(app) {
             next(boom.unauthorized());
           }
 
-          const { _id: id, name, email,rol } = user;
+          const {  name, email,rol } = user;
 
           const payload = {
-            sub: id,
+            
             name,
             email,
             rol,
