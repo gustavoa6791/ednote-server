@@ -24,11 +24,13 @@ function authApi(app) {
     if (!apiKeyToken) {
       next(boom.unauthorized('apiKeyToken is required'));
     }
-    
+
 
     passport.authenticate('basic', function (error, user) {
       try {
-        if (error || !user) {
+
+          console.log
+        if (error || !user || user == undefined ) {
           next(error);
         }
 

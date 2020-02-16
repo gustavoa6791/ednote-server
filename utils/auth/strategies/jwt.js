@@ -25,7 +25,7 @@ passport.use(
 
         cb(null, { ...user,rol: tokenPayload.rol, scopes: tokenPayload.scopes });
       } catch (error) {
-        return cb(error);
+        return cb(boom.unauthorized(), false);
       }
     }
   )
