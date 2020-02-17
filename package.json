@@ -12,7 +12,6 @@
   },
   "keywords": [],
   "author": "",
-  
   "license": "ISC",
   "dependencies": {
     "@hapi/boom": "^7.4.2",
@@ -23,6 +22,7 @@
     "helmet": "^3.19.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.7",
+    "nodemailer": "^6.4.2",
     "now": "^16.7.3",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",

@@ -4,6 +4,8 @@ const boom = require('@hapi/boom');
 const jwt = require('jsonwebtoken');
 const ApiKeysService = require('../services/apiKeys');
 const UsersService = require('../services/users');
+const EmailService = require('../services/email');
+
 const validationHandler = require('../utils/middleware/validationHandler');
 const { createUserSchema, createProviderUserSchema } = require('../utils/schemas/users');
 const { config } = require('../config');
@@ -17,6 +19,7 @@ function authApi(app) {
 
   const apiKeysService = new ApiKeysService();
   const usersService = new UsersService();
+  const emailService = new EmailService();
 
   router.post('/sign-in', async function (req, res, next) {
     const { apiKeyToken } = req.body;
@@ -28,7 +31,7 @@ function authApi(app) {
 
     passport.authenticate('basic', function (error, user) {
       try {
-        if (error || !user || user == undefined ) {
+        if (error || !user || user == undefined) {
           next(error);
         }
 
@@ -46,30 +49,48 @@ function authApi(app) {
 
           if (user != undefined) {
 
-          const { _id: id, name, email,rol } = user;
+            const { _id: id, name, email, rol } = user;
 
-          const payload = {
-            sub: id,
-            name,
-            email,
-            rol,
-            scopes: apiKey.scopes
-          };
+            const payload = {
+              sub: id,
+              name,
+              email,
+              rol,
+              scopes: apiKey.scopes
+            };
 
-          const token = jwt.sign(payload, config.authJwtSecret, {
-            expiresIn: '15m'
-          });
+            const token = jwt.sign(payload, config.authJwtSecret, {
+              expiresIn: '15m'
+            });
 
-          return res.status(200).json({ token, user: { id, name, email ,rol} });
-            
+            return res.status(200).json({ token, user: { id, name, email, rol } });
+
           }
 
-          
-        }); 
+
+        });
       } catch (error) {
         next();
       }
     })(req, res, next);
+  });
+
+
+  router.post('/remember', async function (req, res, next) {
+    try {
+      const { emailToRemember } = req.body;
+
+      await emailService.main(emailToRemember.email).catch(console.error)
+
+      //const usuarioCorreo = 
+      //console.log(usuarioCorreo);
+      
+      //res.json(usuarioCorreo)
+
+
+    } catch (error) {
+      next(error);
+    }
   });
 
   router.post('/sign-up', validationHandler(createUserSchema), async function (req, res, next) {
@@ -83,7 +104,7 @@ function authApi(app) {
         data: createdUserId,
         message: 'user created'
       });
-      
+
     } catch (error) {
       next(error);
     }
