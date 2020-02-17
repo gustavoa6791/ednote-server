@@ -78,14 +78,13 @@ function authApi(app) {
 
   router.post('/remember', async function (req, res, next) {
     try {
-      const { emailToRemember } = req.body;
+      const { email } = req.body.emailToRemember;
 
-      await emailService.main(emailToRemember.email).catch(console.error)
-
-      //const usuarioCorreo = 
-      //console.log(usuarioCorreo);
+      console.log(email);
       
-      //res.json(usuarioCorreo)
+      await emailService.main(email).catch(console.error)
+
+      res.send("ok")
 
 
     } catch (error) {
