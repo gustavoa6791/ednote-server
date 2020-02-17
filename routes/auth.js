@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const boom = require('@hapi/boom');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const ApiKeysService = require('../services/apiKeys');
 const UsersService = require('../services/users');
 const EmailService = require('../services/email');
@@ -84,32 +85,32 @@ function authApi(app) {
 
   router.post('/change', async function (req, res, next) {
     try {
-      const { email, password, codigo } = req.body.data
+      const { email, password: password1, codigo } = req.body.data
 
-      const userChange = await usersService.getUserForEmail( email );
+      const userChange = await usersService.getUserForEmail(email);
 
-      const {recovery}= userChange
+      const { recovery } = userChange
 
-      const diferencia = (new Date() - recovery[0]) / (1000*60)
+      const diferencia = (new Date() - recovery[0]) / (1000 * 60)
       const codigoValido = (codigo == recovery[1])
       const codigoActivo = recovery[2]
 
-    
 
-       if (diferencia <= 30 && codigoValido && codigoActivo) {
-       console.log("hola");
+
+      if (diferencia <= 30 && codigoValido && codigoActivo) {
+       
         
-        
+        const newrecovery = { recovery: [recovery[0], recovery[1], false] }
+        const newPassword = {password:await bcrypt.hash(password1, 10)}
+
+        await usersService.updateUser(email, newrecovery);
+        await usersService.updateUser(email, newPassword);
+
+
       }
 
-      
-      
-      
-      
-      
-
       res.send("ok")
-      
+
     } catch (error) {
       next(error);
     }

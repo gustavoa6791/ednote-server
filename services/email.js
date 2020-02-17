@@ -23,6 +23,7 @@ class EmailService {
 
         const user = await this.mongoDB.getForEmail(this.collection, email);
 
+
         const { email: emailOther, name, recovery } = user
         const codigo = this.generadorCodigo()
 
