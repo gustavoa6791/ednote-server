@@ -21,7 +21,7 @@
     "AUTH_JWT_SECRET": "@ednote-auth",
     "PUBLIC_API_KEY_TOKEN": "@ednote-keypublic",
     "ADMIN_API_KEY_TOKEN": "@ednote-keyadmin",
-    "SERVER_EMAIL ": "@ednote-email", 
+    "SERVER_EMAIL": "@ednote-email", 
     "SERVER_EMAIL_PASSWORD": "@ednote-emailpass" 
   }
 }
