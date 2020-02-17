@@ -28,7 +28,6 @@ function authApi(app) {
       next(boom.unauthorized('apiKeyToken is required'));
     }
 
-
     passport.authenticate('basic', function (error, user) {
       try {
         if (error || !user || user == undefined) {
@@ -36,7 +35,6 @@ function authApi(app) {
         }
 
         req.login(user, { session: false }, async function (error) {
-
           if (error) {
             next(error);
           }
@@ -48,7 +46,6 @@ function authApi(app) {
           }
 
           if (user != undefined) {
-
             const { _id: id, name, email, rol } = user;
 
             const payload = {
@@ -64,10 +61,7 @@ function authApi(app) {
             });
 
             return res.status(200).json({ token, user: { id, name, email, rol } });
-
           }
-
-
         });
       } catch (error) {
         next();
@@ -79,14 +73,43 @@ function authApi(app) {
   router.post('/remember', async function (req, res, next) {
     try {
       const { email } = req.body.emailToRemember;
-
-      console.log(email);
-      
       await emailService.main(email).catch(console.error)
 
       res.send("ok")
 
+    } catch (error) {
+      next(error);
+    }
+  });
 
+  router.post('/change', async function (req, res, next) {
+    try {
+      const { email, password, codigo } = req.body.data
+
+      const userChange = await usersService.getUserForEmail( email );
+
+      const {recovery}= userChange
+
+      const diferencia = (new Date() - recovery[0]) / (1000*60)
+      const codigoValido = (codigo == recovery[1])
+      const codigoActivo = recovery[2]
+
+    
+
+       if (diferencia <= 30 && codigoValido && codigoActivo) {
+       console.log("hola");
+        
+        
+      }
+
+      
+      
+      
+      
+      
+
+      res.send("ok")
+      
     } catch (error) {
       next(error);
     }
