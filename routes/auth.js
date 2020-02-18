@@ -116,6 +116,29 @@ function authApi(app) {
     }
   });
 
+  router.post('/search', async function (req, res, next) {
+
+   
+    const {data} = req.body
+    
+    
+    try {
+      const users = await usersService.getUserForName(data);
+
+     
+      
+      res.status(200).json({
+         users
+         
+      });
+
+      console.log(users)
+
+    } catch (error) {
+      next(error);
+    }
+  });
+
   router.post('/sign-up', validationHandler(createUserSchema), async function (req, res, next) {
 
     const { body: user } = req;
