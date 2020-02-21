@@ -12,7 +12,6 @@ const { createUserSchema, createProviderUserSchema } = require('../utils/schemas
 const { config } = require('../config');
 require('../utils/auth/strategies/basic');   // Basic strategy
 
-
 function authApi(app) {
 
   const router = express.Router();
@@ -76,7 +75,7 @@ function authApi(app) {
       const { email } = req.body.emailToRemember;
       await emailService.main(email).catch(console.error)
 
-      res.send("ok")
+      res.status(200)
 
     } catch (error) {
       next(error);
@@ -95,21 +94,16 @@ function authApi(app) {
       const codigoValido = (codigo == recovery[1])
       const codigoActivo = recovery[2]
 
-
-
       if (diferencia <= 30 && codigoValido && codigoActivo) {
        
-        
         const newrecovery = { recovery: [recovery[0], recovery[1], false] }
         const newPassword = {password:await bcrypt.hash(password1, 10)}
 
         await usersService.updateUser(email, newrecovery);
         await usersService.updateUser(email, newPassword);
-
-
       }
 
-      res.send("ok")
+      res.status(200)
 
     } catch (error) {
       next(error);
@@ -118,21 +112,51 @@ function authApi(app) {
 
   router.post('/search', async function (req, res, next) {
 
-   
     const {data} = req.body
-    
-    
+  
     try {
-      const users = await usersService.getUserForName(data);
+      var users = {}
+      
+      if(data.data != ""){
+        
+       users = await usersService.getUserForName(data);
 
+      }
+
+      if(data.data != ""){
+        
+        users = await usersService.getUserForName(data);
+ 
+       }
+       if(data.data == '@'){
+        
+        users = await usersService.getUserForName({ data: '' });
+ 
+       }
+
+      
+      
+      
      
       
-      res.status(200).json({
-         users
-         
-      });
 
-      console.log(users)
+      res.status(200).json({users});
+
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.post('/changeProfile', async function (req, res, next) {
+
+    const {data} = req.body
+  
+    try {
+
+      console.log(data)
+      // const users = await usersService.getUserForName(data);
+
+      // res.status(200).json({users});
 
     } catch (error) {
       next(error);

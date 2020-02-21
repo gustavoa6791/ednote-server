@@ -21,6 +21,7 @@ class UsersService {
 
   async getUserForName( name ) {
     const user = await this.mongoDB.getForName(this.collection,  name );
+    
     return user;
   }
 
