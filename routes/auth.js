@@ -82,6 +82,27 @@ function authApi(app) {
     }
   });
 
+  router.post('/unlock', async function (req, res, next) {
+    try {
+
+      
+      
+       const { data} = req.body.data;
+
+       
+
+       const newChance = { chance: [new Date(), 0] }
+
+        await usersService.updateUser(data, newChance);
+    
+
+      res.status(200)
+
+    } catch (error) {
+      next(error);
+    }
+  });
+
   router.post('/change', async function (req, res, next) {
     try {
       const { email, password: password1, codigo } = req.body.data
@@ -94,6 +115,19 @@ function authApi(app) {
       const codigoValido = (codigo == recovery[1])
       const codigoActivo = recovery[2]
 
+      if(diferencia > 30 && codigoActivo && codigoValido){
+       return next(boom.unauthorized("codigo caducado"))
+      }
+
+      if(diferencia <= 30 && !codigoActivo && codigoValido){
+         return next(boom.unauthorized("codigo usado"))
+      }
+
+      if( !codigoValido){
+        return next(boom.unauthorized("codigo no coincide"))
+      }
+
+
       if (diferencia <= 30 && codigoValido && codigoActivo) {
        
         const newrecovery = { recovery: [recovery[0], recovery[1], false] }
@@ -102,11 +136,14 @@ function authApi(app) {
         await usersService.updateUser(email, newrecovery);
         await usersService.updateUser(email, newPassword);
       }
-
+          console.log("hola");
+          
       res.status(200)
 
     } catch (error) {
-      next(error);
+      console.log(error);
+      
+      next(error)
     }
   });
 
