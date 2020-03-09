@@ -1,24 +1,42 @@
 const Mongolib = require('../lib/mongo')
 
-class UserMateriasService{
-  constructor(){
+class UserMateriasService {
+
+  constructor() {
     this.collection = 'user_materia'
     this.MongoDB = new Mongolib()
   }
 
-  async getUserMaterias({userID}){
-    const query = userID && {userID}
-    const userMovies = await this.MongoDB.getAll(this.collection,query)
-  
-    return userMovies || []
+  async getUserMaterias(data) {
+
+    const materias = await this.MongoDB.getAll('materias', {})
+    const userMaterias = await this.MongoDB.getAllUM(this.collection, data)
+
+    const dataMaterias = []
+
+    for (let i = 0; i < materias.length; i++) {
+      for (let j = 0; j < userMaterias.length; j++) {
+        if (materias[i]._id == userMaterias[j].id_subject)
+
+          dataMaterias.push({
+            id: userMaterias[j]._id,
+            name: materias[i].name,
+            code: materias[i].code,
+            credits: materias[i].credits,
+            group: userMaterias[j].group
+          })
+      }
+    }
+    return dataMaterias || []
+  }
+
+  async createUserMovie({ userMovie }) {
 
   }
 
-  async createUserMovie({userMovie}){
-
-  }
-
-  async deleteUserMovie({userMovieID}){
+  async deleteUserMovie({ userMovieID }) {
 
   }
 }
+
+module.exports = UserMateriasService
