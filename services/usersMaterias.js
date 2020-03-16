@@ -23,18 +23,19 @@ class UserMateriasService {
             name: materias[i].name,
             code: materias[i].code,
             credits: materias[i].credits,
-            group: userMaterias[j].group
+            group: userMaterias[j].group,
+            notes: userMaterias[j].notes 
           })
       }
     }
     return dataMaterias || []
   }
 
-  async createUserMovie({ userMovie }) {
+  async createUserMaterias({ userMovie }) {
 
   }
 
-  async deleteUserMovie({ userMovieID }) {
+  async deleteUserMaterias({ userMovieID }) {
 
   }
 }
