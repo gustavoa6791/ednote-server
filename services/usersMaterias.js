@@ -24,7 +24,11 @@ class UserMateriasService {
             code: materias[i].code,
             credits: materias[i].credits,
             group: userMaterias[j].group,
-            notes: userMaterias[j].notes 
+            notes: userMaterias[j].notes,
+            notesnumber: userMaterias[j].notesnumber,
+            notesPheader: userMaterias[j].notesPheader,
+            notesPitem: userMaterias[j].notesPitem,
+       
           })
       }
     }
