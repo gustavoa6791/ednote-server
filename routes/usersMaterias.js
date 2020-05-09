@@ -12,8 +12,6 @@ function userMateriasApi(app) {
 
   router.post('/all', async function (req, res, next){
 
-    
-    
     const {data} = req.body
    
     try {
@@ -26,6 +24,24 @@ function userMateriasApi(app) {
     } catch (error) {
       next(error)
     }
+  })
+
+  router.post('/set', async function (req, res, next){
+
+    const {data} = req.body
+
+    console.log(data)
+   
+     try {
+      const usersMaterias = await userMateriasService.updateUserMaterias( data )
+      res.status(200).json({
+        data: data,
+        message: "materias listadas"
+      })
+
+    } catch (error) {
+      next(error)
+    } 
   })
 
   router.post('/student', async function (req, res, next){

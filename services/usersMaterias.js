@@ -78,8 +78,9 @@ class UserMateriasService {
     return  dataMateriasEstudiante || [] 
   }
 
-  async createUserMaterias({ userMovie }) {
+  async updateUserMaterias( data) {
 
+    await this.MongoDB.update(this.collection, data.id, data)
   }
 
   async deleteUserMaterias({ userMovieID }) {
